@@ -1,1 +1,1 @@
-# -aws-eks-observability-platform
+# AWS EKS Observability Platform
