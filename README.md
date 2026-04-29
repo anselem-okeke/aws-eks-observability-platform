@@ -1,1 +1,1 @@
-# AWS EKS Observability Platform
+# AWS SRE Observability Platform
