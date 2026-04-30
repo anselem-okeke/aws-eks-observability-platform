@@ -1,0 +1,36 @@
+aws_region = "eu-central-1"
+
+project_name = "sre-observability"
+environment  = "dev"
+
+vpc_cidr = "10.40.0.0/16"
+
+availability_zones = [
+  "eu-central-1a",
+  "eu-central-1b"
+]
+
+public_subnet_cidrs = [
+  "10.40.0.0/24",
+  "10.40.1.0/24"
+]
+
+private_subnet_cidrs = [
+  "10.40.10.0/24",
+  "10.40.11.0/24"
+]
+
+cluster_name       = "sre-observability-dev"
+kubernetes_version = "1.33"
+
+node_instance_types = ["t3.medium"]
+node_desired_size   = 2
+node_min_size       = 2
+node_max_size       = 3
+
+tags = {
+  Project     = "aws-sre-observability-platform"
+  Environment = "dev"
+  ManagedBy   = "terraform"
+  Owner       = "anselem"
+}

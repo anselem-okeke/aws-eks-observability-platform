@@ -1,0 +1,52 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars.example
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Keep example variable files
+!*.tfvars.example
+
+# Terraform lock file committed to git
+!.terraform.lock.hcl
+
+# Kubernetes / secrets
+kubeconfig
+*.kubeconfig
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+secrets/
+*.secret.yaml
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+tfplan
+
+*.tfplan
+# Python cache
+__pycache__/
+*.py[cod]
+.venv/
+venv/

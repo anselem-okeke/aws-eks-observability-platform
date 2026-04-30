@@ -1,0 +1,65 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bank-of-anthos-frontend
+  namespace: fintech-workload
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+    alb.ingress.kubernetes.io/healthcheck-path: /
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+
+
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: bank-of-anthos-frontend
+#   namespace: fintech-workload
+#   annotations:
+#     # Original Annotations
+#     kubernetes.io/ingress.class: alb
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+#     alb.ingress.kubernetes.io/target-type: ip
+#     alb.ingress.kubernetes.io/healthcheck-path: /
+#
+#     # Updated/New Annotations from your patch
+#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+#     alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:region:account-id:certificate/XXXXXX" # Value of $CERT_ARN_EU
+#     alb.ingress.kubernetes.io/ssl-redirect: '443'
+# spec:
+#   ingressClassName: alb
+#   rules:
+#     - http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: frontend
+#                 port:
+#                   number: 80
+
+
+
+#   --output table
+# ---------------------------------------------------------------------------------------------------------------------------------------------
+# |                                                            DescribeCertificate                                                            |
+# +------------------------------------------------------------+--------+---------------------------------------------------------------------+
+# |                            Name                            | Type   |                                Value                                |
+# +------------------------------------------------------------+--------+---------------------------------------------------------------------+
+# |  _662191d447d5c18f7cf3f370a7efc7f3.anselemokeke.dpdns.org. |  CNAME |  _d66a611d341d9a1789bbd6bd43e308d2.jkddzztszm.acm-validations.aws.  |
+# +------------------------------------------------------------+--------+---------------------------------------------------------------------+
+

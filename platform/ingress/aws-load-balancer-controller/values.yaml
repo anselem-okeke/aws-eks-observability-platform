@@ -1,0 +1,9 @@
+clusterName: sre-observability-dev
+region: eu-central-1
+vpcId: vpc-0406a5ffc38121ed3
+
+serviceAccount:
+  create: true
+  name: aws-load-balancer-controller
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::521544431137:role/sre-observability-dev-aws-load-balancer-controller-role
