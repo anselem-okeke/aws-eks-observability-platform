@@ -205,3 +205,23 @@ up{job=~".*alertmanager.*"}
 | PVC provisioning health          | Pending PVC count                            | 0 pending PVCs > 5 minutes   |
 | Pod stability                    | CrashLoopBackOff pods                        | 0 critical pods              |
 | Monitoring availability          | Prometheus/Grafana/Alertmanager availability | 99.9%                        |
+
+## Implementation Status
+
+Status: Implemented in Grafana and exported as JSON.
+
+Dashboard JSON:
+
+```text
+dashboards/platform/platform-observability-baseline.json
+dashboards/platform/platform-observability-baseline2.json
+dashboards/platform/platform-observability-baseline3.json
+```
+Current rows:
+
+- Cluster Overview
+- Node Resource Saturation
+- Pod Health
+- Storage Health
+- Critical Platform Controllers
+- Monitoring Stack Health
