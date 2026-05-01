@@ -35,6 +35,70 @@ prometheus:
 alertmanager:
   enabled: true
 
+  config:
+    global:
+      resolve_timeout: 5m
+
+    route:
+      receiver: default-null
+      group_by:
+        - alertname
+        - severity
+        - area
+        - app
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 4h
+
+      routes:
+        - receiver: critical-alerts
+          matchers:
+            - severity="critical"
+          group_wait: 10s
+          repeat_interval: 1h
+
+        - receiver: warning-alerts
+          matchers:
+            - severity="warning"
+          repeat_interval: 4h
+
+        - receiver: platform-alerts
+          matchers:
+            - area="platform"
+
+        - receiver: workload-alerts
+          matchers:
+            - area="workload"
+
+        - receiver: ingress-alerts
+          matchers:
+            - area="ingress"
+
+        - receiver: storage-alerts
+          matchers:
+            - area="storage"
+
+        - receiver: database-alerts
+          matchers:
+            - area="database"
+
+    receivers:
+      - name: default-null
+
+      - name: critical-alerts
+
+      - name: warning-alerts
+
+      - name: platform-alerts
+
+      - name: workload-alerts
+
+      - name: ingress-alerts
+
+      - name: storage-alerts
+
+      - name: database-alerts
+
   alertmanagerSpec:
     storage:
       volumeClaimTemplate:
