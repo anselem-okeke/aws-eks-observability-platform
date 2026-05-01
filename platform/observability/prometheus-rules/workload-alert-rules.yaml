@@ -1,0 +1,102 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: bank-of-anthos-workload-alert-rules
+  namespace: monitoring
+  labels:
+    release: kps
+    app.kubernetes.io/name: bank-of-anthos-workload-alert-rules
+    app.kubernetes.io/part-of: aws-sre-observability-platform
+spec:
+  groups:
+    - name: bank-of-anthos.workload.health
+      rules:
+        - alert: BankOfAnthosPodNotRunning
+          expr: |
+            sum(kube_pod_status_phase{namespace="fintech-workload",phase=~"Pending|Failed|Unknown"}) > 0
+          for: 5m
+          labels:
+            severity: warning
+            area: workload
+            app: bank-of-anthos
+          annotations:
+            summary: "Bank of Anthos has pods not running"
+            description: "One or more Bank of Anthos pods are Pending, Failed, or Unknown for more than 5 minutes."
+
+        - alert: BankOfAnthosPodCrashLooping
+          expr: |
+            kube_pod_container_status_waiting_reason{
+              namespace="fintech-workload",
+              reason="CrashLoopBackOff"
+            } == 1
+          for: 5m
+          labels:
+            severity: warning
+            area: workload
+            app: bank-of-anthos
+          annotations:
+            summary: "Bank of Anthos pod is CrashLoopBackOff"
+            description: "Pod {{ $labels.pod }} is in CrashLoopBackOff."
+
+        - alert: BankOfAnthosDeploymentUnavailable
+          expr: |
+            kube_deployment_status_replicas_unavailable{
+              namespace="fintech-workload"
+            } > 0
+          for: 5m
+          labels:
+            severity: critical
+            area: workload
+            app: bank-of-anthos
+          annotations:
+            summary: "Bank of Anthos deployment has unavailable replicas"
+            description: "Deployment {{ $labels.deployment }} has unavailable replicas."
+
+        - alert: BankOfAnthosStatefulSetUnavailable
+          expr: |
+            kube_statefulset_status_replicas_ready{
+              namespace="fintech-workload"
+            }
+            <
+            kube_statefulset_replicas{
+              namespace="fintech-workload"
+            }
+          for: 5m
+          labels:
+            severity: critical
+            area: database
+            app: bank-of-anthos
+          annotations:
+            summary: "Bank of Anthos StatefulSet unavailable"
+            description: "StatefulSet {{ $labels.statefulset }} has fewer ready replicas than desired."
+
+        - alert: BankOfAnthosPodRestarting
+          expr: |
+            sum by (pod) (
+              increase(kube_pod_container_status_restarts_total{
+                namespace="fintech-workload"
+              }[15m])
+            ) > 0
+          for: 5m
+          labels:
+            severity: warning
+            area: workload
+            app: bank-of-anthos
+          annotations:
+            summary: "Bank of Anthos pod restarted"
+            description: "Pod {{ $labels.pod }} restarted within the last 15 minutes."
+
+        - alert: BankOfAnthosIngressMissing
+          expr: |
+            count(kube_ingress_info{
+              namespace="fintech-workload",
+              ingress="bank-of-anthos-frontend"
+            }) < 1
+          for: 5m
+          labels:
+            severity: critical
+            area: ingress
+            app: bank-of-anthos
+          annotations:
+            summary: "Bank of Anthos ingress missing"
+            description: "The Bank of Anthos frontend ingress is missing."
