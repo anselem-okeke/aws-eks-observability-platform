@@ -1,4 +1,4 @@
-# Bank of Anthos Workload Observability Baseline
+## Bank of Anthos Workload Observability Baseline
 
 ## Purpose
 
