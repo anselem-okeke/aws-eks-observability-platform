@@ -1,0 +1,29 @@
+replicaCount: 1
+
+opensearchHosts: "http://opensearch-main.logging.svc.cluster.local:9200"
+
+image:
+  tag: "3.0.0"
+
+service:
+  type: ClusterIP
+  port: 5601
+
+resources:
+  requests:
+    cpu: "250m"
+    memory: "512Mi"
+  limits:
+    cpu: "500m"
+    memory: "1Gi"
+
+extraEnvs:
+  - name: DISABLE_SECURITY_DASHBOARDS_PLUGIN
+    value: "true"
+
+config:
+  opensearch_dashboards.yml: |
+    server.host: "0.0.0.0"
+    server.name: "opensearch-dashboards"
+    opensearch.hosts: ["http://opensearch-main.logging.svc.cluster.local:9200"]
+    opensearch.ssl.verificationMode: none
